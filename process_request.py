@@ -1,0 +1,44 @@
+import io
+from google.cloud import vision
+from google.cloud.vision import types
+from flask import render_template
+
+def process_request(uri):
+	descriptions = []
+
+	vision_client = vision.ImageAnnotatorClient()
+	image = types.Image()
+	image.source.image_uri = uri
+
+	web_detection = vision_client.web_detection(image=image).web_detection.web_entities
+
+	for entity in web_detection:
+	    descriptions.append(entity.description)
+
+	return render_template('output.html', heading=descriptions[0], output=findCure(descriptions))
+
+def findCure(descriptions):
+	if "Neem Tree" in descriptions:
+		return "Neem leaf is used for leprosy, eye disorders, bloody nose, intestinal worms, stomach upset, loss of appetite, skin ulcers, diseases of the heart and blood vessels (cardiovascular disease), fever, diabetes, gum disease (gingivitis), and liver problems"
+	elif "Turmeric" == descriptions[0]:
+		return "Curcumin is the active ingredient in turmeric which has been shown to have a wide range of therapeutic effects. Digestive Disorders. Turmeric is considered as a digestive bitter and a carminative. Liver Diseases. Cancer. Atherosclerosis. Osteoarthritis. Bacterial Infection / Wounds. Eye Disorder. Other Health Disorders."
+	elif "Ginger" == descriptions[0]:
+		return "Ginger has a wide variety of effects on the human body and is known to be effective for the treatment of cataracts, amenorrhea, heart disease, migraines, stroke, , angina, athlete's foot, colds, bursitis, chronic fatigue, tendinitis, flu, coughs, depression, dizziness, fever, erectile difficulties, infertility, kidney stones, Raynaud's disease, sciatica, and viral infections."
+	elif "Basil" in descriptions:
+		return "Tulsi (Holy Basil) is another herb that possesses numerous health-giving assets. It has proven anti toxic properties as well as nerve tonic and boosts intellect. The herb of Holy Basil is highly beneficial for respiratory ailments and a boon for fevers of mixed origin. Ayurveda believes that this herb alone can withstand the toxins in your system and at the same time elevate your resistance against disease. Also, Holy basil is believed to hold anti-asthmatic and anti-infective properties. Ayurveda recommends Holy Basil to empower respiratory resistance."
+	elif "Garlic" in descriptions:
+		return "Garlic or Lahsun, according to Ayurveda, is considered to be a stimulant and a rejuvenator. Natural properties of this herb include being hot in action, slimy and heavy and providing with bitter aftertaste. Also, the herb of Garlic is carminative, a good diuretic and has a distinctive property of renewing the damaged body tissues. The properties of garlic include being hot in action, slimy and heavy and provide a bitter aftertaste. The varied properties of Garlic reveals that it helps in digestion, it has a soothing action on the brain, good for the eyes, useful in the diseases of the throat, helps to remove parasites from the intestines, relieves any swelling and also helps in reunion of the broken bones. Also it contains a unique virtue to fight toxins and enhancing the general body resistance against a disease"
+	elif ("Hyssop" in descriptions) or ("Waterhyssop" in descriptions):
+		return "The herb of Brahmi belongs to the family Umbelliferae, the Latin name of the herb is Centella asiatica. The Sanskrit synonyms are more descriptive of the herb like ‘Brahmi’ i.e. that what increases intellect, ‘Sarswati’ i.e. that what enhances the brain powers, ‘Mandooki’ i.e. it is found in damp places like besides rivers and ponds and spreads like a frog. The herb of Brahmi is generally annual and spreads on the ground. It bears small leaves that are kidney shaped and small red coloured flowers. In the Ayurveda therapy, the natural herb of Brahmi is used effectively to cure ailments related to the dysfunction of the brain and also to revive and reinforce the efficient working of the brain commands. As a natural brain tonic, the Ayurveda herb of Brahmi comes to extensive usage to enhance intellect as well as memory power. Not only this, the herb of Brahmi is used by Ayurveda therapists in healing mind and brain related ailments like epilepsy and anxiety."
+	elif ("Gooseberry" in descriptions) or ("Indian gooseberry" in descriptions):
+		return "In Ayurveda text it is mentioned that the special properties of rejuvenation and revitalizing of the entire body systems lie in the fruit of Aamla. Aamla or Emblica officinalis which is its Latin name is found extensively in India in the form of two varieties. One is hard, small in size and found in forests; while the other type is softer, bigger in size, more fleshy and is cultivated. The fruit of Aamla is found to be mainly useful in decreasing the heat as per its natural properties. Therefore, its most extensive use has been seen in the treatment of the diseases associated with increased body heat. For example, it proves quite useful in ailments like burning sensation in eyes and in sole of the feet, increased thirst; or when there is immature graying of the hair due to excessive heat inside the body."
+	elif "Liquorice" in descriptions:
+		return "The herb of liquorice (also spelt as licorice), and known as mulathee or yastimadhu in Hindi is known for providing us with a variety of health restoring benefits. It may be used both for preventive, as well as curative purposes, although within the recommended dosage. In Ayurveda, the roots of yashtimadhu are used for preparing medicines. Yashtimadhu, as the name suggests, has a sweet taste as well as after taste. Ayurveda counsels it to be supportive in treating the ailments relating to Vata and Pitta doshas imbalance. The nature of the herb is heavy, slimy and cold in action. It therefore helps to balance the aggravated Vata or the air body humor, as well as the increased pitta or the heat in the body. Ayurveda believes that the herb of liquorice is beneficial in hyperacidity, habitual constipation, abdominal pain, bronchitis, colds, cough, sore throat, muscle spasms, mouth and stomach ulcers and painful or burning urination. Moreover, it naturally supports the vital organs by improving the body’s immunity and endurance."
+	elif "Aloe vera" in descriptions:
+		return "The healing herb of Aloe vera is actually a store house of multiple health giving assets and is primarily a wonderful natural digestive. Ayurveda therapeutic science recommends Aloe Vera for a number of digestion related maladies like acidity, excessive flatulence, indigestion, constipation, loss of hunger and piles. The uses of the herb of Aloe vera are immense. The fresh juice applied on the face can result into fairness and loss of blemishes. The pulp extracted from the leaves of the plant can be taken regularly to improve digestion. The pulp of Aloe vera can be boiled in milk and taken for energy boost. Mix some turmeric powder into the pulp of Aloe vera and this has to be heated on fire and can be applied to the affected part for relief from pain and swellings of joints."
+	elif "Boerhavia diffusa" in descriptions:
+		return "Ayurveda regards Punarnava as the rejuvenating and revitalizing herb. Derived from two Hindi words 'Punar' which means again and 'nava' is new. Therefore a herb that is believed to renew the body systems and all the more rejuvenates as well as revives the body is called Punarnava. The Latin name of the herb is Boerhavia diffusa and in English it is called as Spreading hogweed. Punarnava is sweet, pungent and astringent in taste and the after taste is also sweet. It is light and rough by nature and hot in action. Chemically, the main component is an alkaloid called Punarnavine. The root, seed and the entire herb are used for medicinal purposes."
+	elif ("Rennet" in descriptions) or ("Justicia adhatoda" in descriptions) or ("Asian Ginseng" in descriptions):
+		return "Ashwagandha is one herb that could provide you with multiple health benefits viz. restoring your energy levels as well as vigour and vitality, providing stress relief, bestowing peaceful sleep, providing relief in joint pains et al. Ayurveda conveys that the herb of Ashwagandha is extremely beneficial in restoring as well as revitalizing the overall wellbeing of an individual. Not only this, this particular herb comes to use effectively for restoring the energy levels of an emaciated person and all the more significantly playing a substantial role in delaying the process of aging. In the Ayurvedic texts, the herb of Ashwagandha is quite rightly regarded as a Rasayana. Evidently, all the natural herbs that help in increasing resistance against disease, enhancing physical as well as mental health and also aid in delaying the debility of aging; are mainly termed as Rasayanas. The herb of Ashwagandha has the benefit of being entitled as Rasayana, owing to the exceptional properties it holds."
+	else:
+		return "Cannot find the cure, Predicted name is: " + descriptions[0]
