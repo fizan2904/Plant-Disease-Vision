@@ -22,12 +22,13 @@ pip install json
 ```
 
     - Mac
-```
+
+
 brew install python
 sudo pip install flask
 sudo pip install requests
 sudo pip install json
-```
+
 
 ### Installing
 
