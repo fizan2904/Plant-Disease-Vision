@@ -15,6 +15,10 @@ These instructions will get you a copy of the project up and running on your loc
 Ubuntu
 ```
 sudo apt-get update && sudo apt-get -y upgrade
+sudo apt-get install python python-pip
+pip install flask
+pip install requests
+pip install json
 ```
 
 Mac
